@@ -1,0 +1,10 @@
+# OSX system files
+.DS_Store
+
+# media files
+.wav
+.mp4
+.mp3
+.mov
+.ogg
+.aiff
