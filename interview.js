@@ -1,11 +1,11 @@
 // node packages
-const fs = require("fs");
-const { exec, execSync, spawn } = require('child_process')
-const ensureDir = require('ensure-dir')
+// const fs = require("fs");
+// const { exec, execSync, spawn } = require('child_process')
+// const ensureDir = require('ensure-dir')
 const args = require("really-simple-args")();
-const kill  = require('tree-kill');
+// const kill  = require('tree-kill');
 var NodeWebcam = require( "node-webcam" );
-const vorpal = require('vorpal')();
+// const vorpal = require('vorpal')();
 var open = require('mac-open');
 const Jimp = require('jimp')
 const prompts = require('prompts');
@@ -15,7 +15,7 @@ const png2base64 = require('imgconversion');
  
 const cron = require('node-cron');
 
-let artistIDs = 
+// let artistIDs = 
 // throw error in startup if not all flags have been set by user
 function missingArg(arg){
   console.log('\n Error: program option missing ' + arg)
