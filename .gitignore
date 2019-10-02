@@ -8,3 +8,5 @@
 .mov
 .ogg
 .aiff
+.jpeg
+node_modules

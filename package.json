@@ -1,0 +1,32 @@
+{
+  "name": "artstar_interviewer",
+  "version": "1.0.0",
+  "description": "",
+  "main": "interview.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node interview.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/michaelpalumbo/artstar_interviewer.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/michaelpalumbo/artstar_interviewer/issues"
+  },
+  "homepage": "https://github.com/michaelpalumbo/artstar_interviewer#readme",
+  "dependencies": {
+    "cron": "^1.7.2",
+    "imgconversion": "^1.0.7",
+    "jimp": "^0.8.4",
+    "mac-open": "^0.1.3",
+    "node-cron": "^2.0.3",
+    "os": "^0.1.1",
+    "osx-quit": "^1.0.0",
+    "prompts": "^2.2.1",
+    "reconnecting-websocket": "^4.2.0",
+    "vorpal": "^1.12.0"
+  }
+}
