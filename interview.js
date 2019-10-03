@@ -219,8 +219,8 @@ var task = cron.schedule('*/' + args.getParameter("interval") + ' * * * * *', ()
 
     Object.keys(interviewImages).forEach(function(key) {
       var val = interviewImages[key].filename;
-      open(val, { a: "Preview" }, function(error) {
-      });
+      // open(val, { a: "Preview" }, function(error) {
+      // });
 
     });
     //open(snapshot, { a: "Preview" }, function(error) {});
