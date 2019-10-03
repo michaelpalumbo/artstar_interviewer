@@ -1,10 +1,10 @@
 // node packages
 // const fs = require("fs");
-const { exec, execSync, spawn } = require('child_process')
+// const { exec, execSync, spawn } = require('child_process')
 // const ensureDir = require('ensure-dir')
 const args = require("really-simple-args")();
 // const kill  = require('tree-kill');
-//var NodeWebcam = require( "node-webcam" );
+var NodeWebcam = require( "node-webcam" );
 // const vorpal = require('vorpal')();
 var open = require('mac-open');
 const Jimp = require('jimp')
@@ -39,7 +39,7 @@ let interval;
 var numIntervals;
 var counter = 1;
 var portraits = __dirname + '/portraits/'
-// let Webcam
+let Webcam
 
 var artistArray = []
 var record
@@ -89,47 +89,47 @@ if(args.hasParameter("snapshots")) {
 }
 
 ////////// webcam settings:
-// function webcam(){
-//   // Webcam Settings
-//   const webcamOptions = {
-//     //Picture related
+function webcam(){
+  // Webcam Settings
+  const webcamOptions = {
+    //Picture related
 
-//     width: 1920,
-//     height: 1080,
-//     quality: 100,
+    width: 1920,
+    height: 1080,
+    quality: 100,
 
-//     //Delay in seconds to take shot
-//     //if the platform supports miliseconds
-//     //use a float (0.1)
-//     //Currently only on windows
-//     delay: 0,
+    //Delay in seconds to take shot
+    //if the platform supports miliseconds
+    //use a float (0.1)
+    //Currently only on windows
+    delay: 0,
 
-//     //Save shots in memory ////Michael: disabled bc am concerned about this memory use stacking up over 12 hour run. 
-//     // saveShots: true,
+    //Save shots in memory ////Michael: disabled bc am concerned about this memory use stacking up over 12 hour run. 
+    // saveShots: true,
 
-//     // [jpeg, png] support varies
-//     // Webcam.OutputTypes
-//     output: "jpeg",
+    // [jpeg, png] support varies
+    // Webcam.OutputTypes
+    output: "jpeg",
 
-//     //Which camera to use
-//     //Use Webcam.list() for results
-//     //false for default device
-//     device: false,
+    //Which camera to use
+    //Use Webcam.list() for results
+    //false for default device
+    device: false,
 
-//     // [location, buffer, base64]
-//     // Webcam.CallbackReturnTypes
-//     callbackReturn: "location",
+    // [location, buffer, base64]
+    // Webcam.CallbackReturnTypes
+    callbackReturn: "location",
 
-//     //Logging
-//     verbose: false
-//   };
+    //Logging
+    verbose: false
+  };
 
-//   Webcam = NodeWebcam.create( webcamOptions );
+  Webcam = NodeWebcam.create( webcamOptions );
   
-//   // Webcam.list( function( list ) {
-//   //   console.log(list)
-//   // })
-// }
+  // Webcam.list( function( list ) {
+  //   console.log(list)
+  // })
+}
 
 
 let client;
@@ -141,12 +141,12 @@ if(args.hasParameter("server")) {
     host = 'localhost:8082'
     client = new WebSocket('ws://' + host, [], wsOptions);
     console.log('interview program will try to connect to server at ws://localhost:8082')
-    //webcam()
+    webcam()
   } else if (serverHost = 'remote') {
     host = '192.168.0.102:8082'
     client = new WebSocket('ws://' + host, [], wsOptions); 
     console.log('interview program will try to connect to server at ws://192.168.0.102:8082')
-    //webcam()
+    webcam()
   } else {
     missingArg('incorrect -server argument: accepts either "remote" (for artstar performance) or "local" (for developer or testing)')
     
@@ -286,7 +286,6 @@ function takePortrait(){
   /////////////// Sound recorder ///////////////////////
   // recordingFile = portraits + '/' + name + '/' + Date.now() + '.mp3'
   snapshot = portraits + artstarArtistObject.id + '_' + counter + '.jpeg'
-  // snapshot =  artstarArtistObject.id + '_' + counter + '.jpeg'
   interviewImages[counter] = {
     filename: snapshot,
     date: Date.now()
@@ -296,14 +295,9 @@ function takePortrait(){
   // record = spawn('sox', ['-d', recordingFile]);
   // console.log('started recording ' + recordingFile)
   // take a photo
-  // Webcam.capture( snapshot, function( err, data ) {
-    execSync('imagesnap ' + snapshot, (stdout,stderr,err) =>{
-    
-    //open(snapshot, { a: "Preview" }, function(error) {});
-  });
-  console.log('captured snapshot ' + snapshot, 'converting to greyscale...')
-
-  Jimp.read(snapshot)
+  Webcam.capture( snapshot, function( err, data ) {
+    console.log('captured snapshot ' + snapshot, 'converting to greyscale...')
+    Jimp.read(snapshot)
     .then(snap => {
       return snap
         // .resize(256, 256) // resize
@@ -317,6 +311,8 @@ function takePortrait(){
     });
     artistArray.push(snapshot)
     counter++
+    //open(snapshot, { a: "Preview" }, function(error) {});
+  });
 }
 
 
