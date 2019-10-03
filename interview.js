@@ -285,7 +285,7 @@ function startInterview(){
 function takePortrait(){
   /////////////// Sound recorder ///////////////////////
   // recordingFile = portraits + '/' + name + '/' + Date.now() + '.mp3'
-  snapshot = portraits + artstarArtistObject.id + '_' + counter + '.jpeg'
+  snapshot = artstarArtistObject.id + '_' + counter + '.jpeg'
   // snapshot =  artstarArtistObject.id + '_' + counter + '.jpeg'
   interviewImages[counter] = {
     filename: snapshot,
