@@ -298,10 +298,7 @@ function takePortrait(){
   // take a photo
   // Webcam.capture( snapshot, function( err, data ) {
     execSync('imagesnap ' + snapshot, (stdout,stderr,err) =>{
-    
-    //open(snapshot, { a: "Preview" }, function(error) {});
-  });
-  console.log('captured snapshot ' + snapshot, 'converting to greyscale...')
+      console.log('captured snapshot ' + snapshot, 'converting to greyscale...')
 
   Jimp.read(snapshot)
     .then(snap => {
@@ -317,6 +314,9 @@ function takePortrait(){
     });
     artistArray.push(snapshot)
     counter++
+    //open(snapshot, { a: "Preview" }, function(error) {});
+  });
+
 }
 
 
