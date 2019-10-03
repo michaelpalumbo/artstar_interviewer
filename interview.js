@@ -35,8 +35,8 @@ const wsOptions = {
 
 // globals
 var name;
-let interval;
-var numIntervals;
+let interval = 20000
+let numIntervals = 6
 var counter = 1;
 var portraits = __dirname + '/portraits/'
 // let Webcam
