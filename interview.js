@@ -297,7 +297,7 @@ function takePortrait(){
   // console.log('started recording ' + recordingFile)
   // take a photo
   // Webcam.capture( snapshot, function( err, data ) {
-    execSync('imagesnap ' + snapshot, (stdout,stderr,err) =>{
+    exec('imagesnap ' + snapshot, (stdout,stderr,err) =>{
       console.log('captured snapshot ' + snapshot, 'converting to greyscale...')
 
   Jimp.read(snapshot)
