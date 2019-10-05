@@ -3,6 +3,7 @@
 const { exec, execSync, spawn } = require('child_process')
 // const ensureDir = require('ensure-dir')
 const args = require("really-simple-args")();
+
 // const kill  = require('tree-kill');
 //var NodeWebcam = require( "node-webcam" );
 // const vorpal = require('vorpal')();
@@ -14,6 +15,8 @@ const prompts = require('prompts');
 const png2base64 = require('imgconversion');
  
 const cron = require('node-cron');
+const watch = require('watch')
+const fs = require('fs')
 
 // let artistIDs = 
 // throw error in startup if not all flags have been set by user
@@ -65,6 +68,56 @@ let interviewImages = {
   */
 }
 // let id;
+
+/////////////////// NEW FILE WATCHER ///////////////////
+
+watch.createMonitor('./', function (monitor) {
+    monitor.files['./*.jpg'] // Stat object for my zshrc.
+    monitor.on("created", function (f, stat) {
+      // Handle new files
+      let check = f.split('/')[0]
+      if (check === 'portraits'){
+      	// prevent copying a new file if it exists in the portraits folder
+      } else {
+      	thisCounter = counter - 1
+      	 snapshot = portraits + artstarArtistObject.id + '_' + thisCounter + '.jpg'
+
+      	 //console.log(snapshot)
+
+     	fs.rename(f, snapshot, (err) => {
+     		//console.log(err)
+
+		   Jimp.read(snapshot)
+		   .then(snap => {
+		     return snap
+		        .resize(256, 256) // resize
+		        .quality(60) // set JPEG quality
+		       .greyscale() // set greyscale
+		       .write(snapshot); // save
+		        
+		   })
+		   .catch(err => {
+		     console.error(err);
+		   });
+		    //open(snapshot, { a: "Preview" }, function(error) {});
+
+
+
+     	})
+      }
+
+
+
+
+    })
+    monitor.on("changed", function (f, curr, prev) {
+      // Handle file changes
+    })
+    monitor.on("removed", function (f, stat) {
+      // Handle removed files
+    })
+    // monitor.stop(); // Stop watching
+  })
 
 /////////////////// INIT ////////////////
 
@@ -143,7 +196,7 @@ if(args.hasParameter("server")) {
     console.log('interview program will try to connect to server at ws://localhost:8082')
     //webcam()
   } else if (serverHost = 'remote') {
-    host = '192.168.0.18:8082'
+    host = '192.168.0.185:8082'
     client = new WebSocket('ws://' + host, [], wsOptions); 
     console.log('interview program will try to connect to server at ws://192.168.0.102:8082')
     //webcam()
@@ -229,20 +282,7 @@ var task = cron.schedule('*/' + args.getParameter("interval") + ' * * * * *', ()
     selectPortrait()
   } else {
     takePortrait()
-    snapshot = portraits + artstarArtistObject.id + '_' + counter + '.jpeg'
 
-    Jimp.read(snapshot)
-    .then(snap => {
-      return snap
-        // .resize(256, 256) // resize
-        // .quality(60) // set JPEG quality
-        .greyscale() // set greyscale
-        .write(snapshot); // save
-        
-    })
-    .catch(err => {
-      console.error(err);
-    });
 
     counter++
 
@@ -305,6 +345,8 @@ function takePortrait(){
   /////////////// Sound recorder ///////////////////////
   // recordingFile = portraits + '/' + name + '/' + Date.now() + '.mp3'
   snapshot = portraits + artstarArtistObject.id + '_' + counter + '.jpeg'
+  
+  console.log(snapshot)
   // snapshot =  artstarArtistObject.id + '_' + counter + '.jpeg'
   interviewImages[counter] = {
     filename: snapshot,
@@ -316,9 +358,9 @@ function takePortrait(){
   // console.log('started recording ' + recordingFile)
   // take a photo
   // Webcam.capture( snapshot, function( err, data ) {
-    execSync('imagesnap ' + snapshot, (stdout,stderr,err) =>{
+    exec('./imagesnap -d "HD Pro Webcam C920" ' + snapshot, (stdout,stderr,err) =>{
       console.log('captured snapshot ' + snapshot, 'converting to greyscale...')
-
+      console.log('\n\n', stdout, '\n\n', stderr, '\n\n', err)
 
     artistArray.push(snapshot)
     //open(snapshot, { a: "Preview" }, function(error) {});
