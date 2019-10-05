@@ -196,7 +196,7 @@ if(args.hasParameter("server")) {
     console.log('interview program will try to connect to server at ws://localhost:8082')
     //webcam()
   } else if (serverHost = 'remote') {
-    host = '192.168.0.185:8082'
+    host = '192.168.0.102:8082'
     client = new WebSocket('ws://' + host, [], wsOptions); 
     console.log('interview program will try to connect to server at ws://192.168.0.102:8082')
     //webcam()
