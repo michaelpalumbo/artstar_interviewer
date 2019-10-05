@@ -212,6 +212,7 @@ function reset(){
 // }, null, false);
 
 var task = cron.schedule('*/' + args.getParameter("interval") + ' * * * * *', () =>  {
+  console.log(cron, '\n\n\n', '*/' + args.getParameter("interval") + ' * * * * *')
   if(counter > numIntervals){
     task.stop()
     console.log('interview over, order the coffee table book')

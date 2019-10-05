@@ -212,6 +212,8 @@ function reset(){
 // }, null, false);
 
 var task = cron.schedule('*/' + args.getParameter("interval") + ' * * * * *', () =>  {
+  console.log(cron, '\n\n\n', '*/' + args.getParameter("interval") + ' * * * * *')
+  console.log(counter)
   if(counter > numIntervals){
     task.stop()
     console.log('interview over, order the coffee table book')
@@ -227,6 +229,23 @@ var task = cron.schedule('*/' + args.getParameter("interval") + ' * * * * *', ()
     selectPortrait()
   } else {
     takePortrait()
+    snapshot = portraits + artstarArtistObject.id + '_' + counter + '.jpeg'
+
+    Jimp.read(snapshot)
+    .then(snap => {
+      return snap
+        // .resize(256, 256) // resize
+        // .quality(60) // set JPEG quality
+        .greyscale() // set greyscale
+        .write(snapshot); // save
+        
+    })
+    .catch(err => {
+      console.error(err);
+    });
+
+    counter++
+
     
   }
 
@@ -285,7 +304,7 @@ function startInterview(){
 function takePortrait(){
   /////////////// Sound recorder ///////////////////////
   // recordingFile = portraits + '/' + name + '/' + Date.now() + '.mp3'
-  snapshot = artstarArtistObject.id + '_' + counter + '.jpeg'
+  snapshot = portraits + artstarArtistObject.id + '_' + counter + '.jpeg'
   // snapshot =  artstarArtistObject.id + '_' + counter + '.jpeg'
   interviewImages[counter] = {
     filename: snapshot,
@@ -297,23 +316,11 @@ function takePortrait(){
   // console.log('started recording ' + recordingFile)
   // take a photo
   // Webcam.capture( snapshot, function( err, data ) {
-    exec('imagesnap ' + snapshot, (stdout,stderr,err) =>{
+    execSync('imagesnap ' + snapshot, (stdout,stderr,err) =>{
       console.log('captured snapshot ' + snapshot, 'converting to greyscale...')
 
-  Jimp.read(snapshot)
-    .then(snap => {
-      return snap
-        // .resize(256, 256) // resize
-        // .quality(60) // set JPEG quality
-        .greyscale() // set greyscale
-        .write(snapshot); // save
-        
-    })
-    .catch(err => {
-      console.error(err);
-    });
+
     artistArray.push(snapshot)
-    counter++
     //open(snapshot, { a: "Preview" }, function(error) {});
   });
 
